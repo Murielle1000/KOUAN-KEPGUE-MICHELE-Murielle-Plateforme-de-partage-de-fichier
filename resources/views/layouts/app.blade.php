@@ -29,6 +29,10 @@
                    class="nav-link {{ request()->routeIs('files.*') ? 'active' : '' }}">
                     Fichiers
                 </a>
+                <a href="{{ route('explore') }}"
+                    class="nav-link {{ request()->routeIs('explore') ? 'active' : '' }}">
+                    🌐 Explorer
+                </a>
             </div>
         </div>
 
@@ -76,6 +80,51 @@
     <main>
         {{ $slot }}
     </main>
+
+    {{-- Navigation mobile (barre du bas) --}}
+    <nav class="fs-mobile-nav" style="display:none;" id="mobile-nav">
+        <a href="{{ route('dashboard') }}"
+            class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <span>🏠</span>
+            <span>Accueil</span>
+        </a>
+        <a href="{{ route('folders.index') }}"
+            class="{{ request()->routeIs('folders.*') ? 'active' : '' }}">
+            <span>📁</span>
+            <span>Dossiers</span>
+        </a>
+        <a href="{{ route('files.index') }}"
+            class="{{ request()->routeIs('files.*') ? 'active' : '' }}">
+            <span>📄</span>
+            <span>Fichiers</span>
+        </a>
+        <a href="{{ route('files.create') }}">
+            <span>⬆</span>
+            <span>Upload</span>
+        </a>
+        <a href="{{ route('profile.edit') }}"
+            class="{{ request()->routeIs('profile.*') ? 'active' : '' }}">
+            <span>👤</span>
+            <span>Profil</span>
+        </a>
+        <a href="{{ route('explore') }}"
+            class="{{ request()->routeIs('explore') ? 'active' : '' }}">
+            <span>🌐</span>
+            <span>Explorer</span>
+        </a>
+    </nav>
+
+<script>
+  // Afficher la nav mobile uniquement sur petit écran
+  function checkMobile() {
+    const nav = document.getElementById('mobile-nav');
+    if (nav) {
+      nav.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+    }
+  }
+  checkMobile();
+  window.addEventListener('resize', checkMobile);
+</script>
 
 </body>
 </html>

@@ -60,6 +60,11 @@
                     <a href="{{ route('files.index') }}" class="fs-btn fs-btn-ghost" style="justify-content:center;padding:0.85rem;">
                         🔍 Rechercher un fichier
                     </a>
+                    <a href="{{ route('explore') }}"
+                        class="fs-btn fs-btn-ghost"
+                        style="justify-content:center;padding:0.85rem;">
+                        🌐 Explorer les fichiers publics
+                    </a>
                 </div>
             </div>
 

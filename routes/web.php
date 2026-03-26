@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PublicFilesController;
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
@@ -39,6 +40,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // Logs de téléchargement
     Route::get('/files/{file}/logs', [FileController::class, 'logs'])->name('files.logs');
+
+    // Fichiers publics
+    Route::get('/files/public/{token}', [PublicFilesController::class, 'show'])->name('files.public.show');
+    
+    //Fichiers publics - téléchargement
+    Route::get('/explore', [PublicFilesController::class, 'index'])->name('explore');
 
 });
 

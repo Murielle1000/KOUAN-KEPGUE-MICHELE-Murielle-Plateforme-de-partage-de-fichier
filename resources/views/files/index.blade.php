@@ -59,70 +59,73 @@
 
         {{-- Tableau --}}
         <div class="fs-card">
-            <table class="fs-table">
-                <thead>
-                    <tr>
-                        <th>Fichier</th>
-                        <th>Taille</th>
-                        <th>Dossier</th>
-                        <th>Statut</th>
-                        <th>Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($files as $file)
+            <div class="fs-table-wrapper">
+
+                <table class="fs-table">
+                    <thead>
                         <tr>
-                            <td>
-                                <div style="display:flex;align-items:center;gap:0.75rem;">
-                                    <div class="fs-file-icon {{ str_contains($file->mime_type,'image') ? 'fs-file-icon-image' : (str_contains($file->mime_type,'pdf') ? 'fs-file-icon-pdf' : 'fs-file-icon-default') }}">
-                                        {{ str_contains($file->mime_type,'image') ? '🖼' : (str_contains($file->mime_type,'pdf') ? '📕' : '📄') }}
+                            <th>Fichier</th>
+                            <th>Taille</th>
+                            <th>Dossier</th>
+                            <th>Statut</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($files as $file)
+                            <tr>
+                                <td>
+                                    <div style="display:flex;align-items:center;gap:0.75rem;">
+                                        <div class="fs-file-icon {{ str_contains($file->mime_type,'image') ? 'fs-file-icon-image' : (str_contains($file->mime_type,'pdf') ? 'fs-file-icon-pdf' : 'fs-file-icon-default') }}">
+                                            {{ str_contains($file->mime_type,'image') ? '🖼' : (str_contains($file->mime_type,'pdf') ? '📕' : '📄') }}
+                                        </div>
+                                        <span style="font-weight:500;">{{ Str::limit($file->original_name, 35) }}</span>
                                     </div>
-                                    <span style="font-weight:500;">{{ Str::limit($file->original_name, 35) }}</span>
-                                </div>
-                            </td>
-                            <td style="color:var(--gray-500);">{{ $file->formatted_size }}</td>
-                            <td style="color:var(--gray-500);">{{ $file->folder?->name ?? '—' }}</td>
-                            <td>
-                                @if($file->is_public)
-                                    <span class="fs-badge fs-badge-public">● Public</span>
-                                @else
-                                    <span class="fs-badge fs-badge-private">● Privé</span>
-                                @endif
-                            </td>
-                            <td style="color:var(--gray-500);">{{ $file->created_at->format('d/m/Y') }}</td>
-                            <td>
-                                <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
-                                    <a href="{{ route('files.download', $file) }}" class="fs-btn fs-btn-ghost fs-btn-sm">⬇</a>
-                                    <a href="{{ route('files.logs', $file) }}" class="fs-btn fs-btn-ghost fs-btn-sm">📋</a>
+                                </td>
+                                <td style="color:var(--gray-500);">{{ $file->formatted_size }}</td>
+                                <td style="color:var(--gray-500);">{{ $file->folder?->name ?? '—' }}</td>
+                                <td>
                                     @if($file->is_public)
-                                        <form action="{{ route('files.revoke-share', $file) }}" method="POST">
-                                            @csrf @method('DELETE')
-                                            <button class="fs-btn fs-btn-ghost fs-btn-sm">🔒</button>
-                                        </form>
+                                        <span class="fs-badge fs-badge-public">● Public</span>
                                     @else
-                                        <form action="{{ route('files.share', $file) }}" method="POST">
-                                            @csrf
-                                            <button class="fs-btn fs-btn-secondary fs-btn-sm">🔗</button>
-                                        </form>
+                                        <span class="fs-badge fs-badge-private">● Privé</span>
                                     @endif
-                                    <form action="{{ route('files.destroy', $file) }}" method="POST" onsubmit="return confirm('Supprimer ?')">
-                                        @csrf @method('DELETE')
-                                        <button class="fs-btn fs-btn-danger fs-btn-sm">🗑</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" style="text-align:center;padding:3rem;color:var(--gray-500);">
-                                <div style="font-size:2.5rem;margin-bottom:0.75rem;">📄</div>
-                                Aucun fichier. <a href="{{ route('files.create') }}" style="color:var(--violet-600);">Uploader le premier</a>
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                                </td>
+                                <td style="color:var(--gray-500);">{{ $file->created_at->format('d/m/Y') }}</td>
+                                <td>
+                                    <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+                                        <a href="{{ route('files.download', $file) }}" class="fs-btn fs-btn-ghost fs-btn-sm">⬇</a>
+                                        <a href="{{ route('files.logs', $file) }}" class="fs-btn fs-btn-ghost fs-btn-sm">📋</a>
+                                        @if($file->is_public)
+                                            <form action="{{ route('files.revoke-share', $file) }}" method="POST">
+                                                @csrf @method('DELETE')
+                                                <button class="fs-btn fs-btn-ghost fs-btn-sm">🔒</button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('files.share', $file) }}" method="POST">
+                                                @csrf
+                                                <button class="fs-btn fs-btn-secondary fs-btn-sm">🔗</button>
+                                            </form>
+                                        @endif
+                                        <form action="{{ route('files.destroy', $file) }}" method="POST" onsubmit="return confirm('Supprimer ?')">
+                                            @csrf @method('DELETE')
+                                            <button class="fs-btn fs-btn-danger fs-btn-sm">🗑</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" style="text-align:center;padding:3rem;color:var(--gray-500);">
+                                    <div style="font-size:2.5rem;margin-bottom:0.75rem;">📄</div>
+                                    Aucun fichier. <a href="{{ route('files.create') }}" style="color:var(--violet-600);">Uploader le premier</a>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>    
             <div style="padding:1rem 1.5rem;">{{ $files->links() }}</div>
         </div>
     </div>
