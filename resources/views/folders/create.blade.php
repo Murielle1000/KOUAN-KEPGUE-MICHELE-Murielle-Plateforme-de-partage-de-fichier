@@ -1,46 +1,51 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Nouveau dossier
-        </h2>
+        <div>
+            <h1>Nouveau dossier</h1>
+            <p>Créez un dossier pour organiser vos fichiers</p>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white p-6 rounded shadow">
-                <form action="{{ route('folders.store') }}" method="POST">
-                    @csrf
+    <div class="fs-main">
+        <div style="max-width:520px;margin:0 auto;">
+            <div class="fs-card">
+                <div class="fs-card-header">
+                    <h3>📁 Informations du dossier</h3>
+                </div>
+                <div class="fs-card-body">
 
                     @if($parent)
-                        <input type="hidden" name="parent_id" value="{{ $parent->id }}">
-                        <p class="mb-4 text-sm text-gray-500">
-                            Sous-dossier de : <strong>{{ $parent->name }}</strong>
-                        </p>
+                        <div class="fs-alert fs-alert-info" style="margin-bottom:1.25rem;">
+                            📁 Sous-dossier de : <strong>{{ $parent->name }}</strong>
+                        </div>
                     @endif
 
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700">
-                            Nom du dossier
-                        </label>
-                        <input type="text" name="name" value="{{ old('name') }}"
-                               class="mt-1 w-full border rounded px-3 py-2"
-                               placeholder="Mon dossier">
-                        @error('name')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    <form action="{{ route('folders.store') }}" method="POST">
+                        @csrf
+                        @if($parent)
+                            <input type="hidden" name="parent_id" value="{{ $parent->id }}">
+                        @endif
 
-                    <div class="flex gap-3">
-                        <button type="submit"
-                                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                            Créer
-                        </button>
-                        <a href="{{ route('folders.index') }}"
-                           class="px-4 py-2 rounded border hover:bg-gray-50">
-                            Annuler
-                        </a>
-                    </div>
-                </form>
+                        <div class="fs-form-group">
+                            <label class="fs-label">Nom du dossier</label>
+                            <input type="text" name="name" value="{{ old('name') }}"
+                                   class="fs-input" placeholder="Ex: Projets 2024"
+                                   autofocus required>
+                            @error('name')
+                                <p class="fs-error">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div style="display:flex;gap:0.75rem;margin-top:1.5rem;">
+                            <button type="submit" class="fs-btn fs-btn-primary" style="flex:1;justify-content:center;">
+                                📁 Créer le dossier
+                            </button>
+                            <a href="{{ route('folders.index') }}" class="fs-btn fs-btn-ghost">
+                                Annuler
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -96,8 +96,8 @@ class FileController extends Controller
             'is_public_access' => false,
         ]);
 
-        return Storage::disk('private')->download(
-            $file->path,
+        return response()->download(
+            storage_path('app/private/' . $file->path),
             $file->original_name
         );
     }
@@ -146,8 +146,8 @@ class FileController extends Controller
             'is_public_access' => true,
         ]);
 
-        return Storage::disk('private')->download(
-            $file->path,
+        return response()->download(
+            storage_path('app/private/' . $file->path),
             $file->original_name
         );
     }
